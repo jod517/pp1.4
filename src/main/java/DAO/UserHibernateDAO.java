@@ -4,9 +4,12 @@ package DAO;
 import User.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import utill.DBHelper;
+import org.hibernate.Transaction;
 
 import java.util.List;
+import java.util.Optional;
 
 public class UserHibernateDAO implements UserDAO {
 
@@ -29,6 +32,15 @@ public class UserHibernateDAO implements UserDAO {
         session.close();
 
     }
+    @Override
+    public Optional<User> findByLogin(String login) {
+        Session session = sessionFactory.openSession();
+
+        Query<User> query = session.createQuery("FROM User WHERE login = :login ", User.class);
+        query.setParameter("login", login);
+
+        return query.uniqueResultOptional();
+    }
 
     @Override
     public User getUserById(long id) {
@@ -40,14 +52,14 @@ public class UserHibernateDAO implements UserDAO {
     }
 
     @Override
-    public boolean deleteUser(Long id) {
+    public void deleteUser(Long id) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         User user = session.get(User.class, id);
         session.delete(user);
         session.getTransaction().commit();
         session.close();
-        return true;
+
     }
 
     @Override
@@ -73,12 +85,12 @@ public class UserHibernateDAO implements UserDAO {
     }
 
     @Override
-    public boolean addUser(User user) {
+    public void addUser(User user) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.save(user);
         session.getTransaction().commit();
         session.close();
-        return true;
+
     }
 }

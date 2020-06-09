@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class getProp {
+public class GetProp {
     public static String getPropertyValue(String key) {
         Properties properties = new Properties();
-        InputStream propertyStream = getProp.class.getClassLoader().getResourceAsStream("config.properties");
+        InputStream propertyStream = GetProp.class.getClassLoader().getResourceAsStream("config.properties");
         try {
             properties.load(propertyStream);
             properties.getProperty(key);

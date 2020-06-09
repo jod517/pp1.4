@@ -8,6 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class UserJDBCDao implements UserDAO {
 
@@ -26,7 +27,9 @@ public class UserJDBCDao implements UserDAO {
         return instance;
     }
 
-
+    public Optional<User> findByLogin(String login) {
+        return null;
+    }
     public void updateUser(User user) {
         String sql = "UPDATE user SET name = ?, login = ?, password = ? WHERE id = ?";
         try (PreparedStatement preStmt = connection.prepareStatement(sql)) {
@@ -64,15 +67,13 @@ public class UserJDBCDao implements UserDAO {
         }
         return user;
     }
-    public boolean deleteUser(Long id) {
+    public void deleteUser(Long id) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(
                 "delete from user where id= ?")) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
-            return true;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
     }
 
@@ -126,22 +127,22 @@ public class UserJDBCDao implements UserDAO {
     }
 
 
-    public boolean addUser(User user) throws SQLException {
+    public void addUser(User user) throws SQLException {
         int updatesCount = 0;
         if (getUserByName(user.getName()) == null) {
             try (PreparedStatement stmt = connection.prepareStatement(
-                    "INSERT INTO user (name, login, password) values (?, ?, ?)")
+                    "INSERT INTO user (name, login, password, role) values (?, ?, ?, ?)")
             ) {
                 stmt.setString(1, user.getName());
                 stmt.setString(2, user.getLogin());
                 stmt.setString(3, user.getPassword());
+                stmt.setString(4, user.getRole());
                 updatesCount = stmt.executeUpdate();
             }
         }
         if (updatesCount != 1) {
             throw new IllegalStateException("Error while adding user!");
         }
-        return false;
     }
 
 

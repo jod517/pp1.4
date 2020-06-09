@@ -18,13 +18,14 @@
   </head>
   <body>
   <h1>Start page</h1>
-  <form action="/preproject1_war_exploded/read">
+  <form action="/admin/read">
       <input type="submit" value="Show all users" />
   </form>
-
-
-  <form action="/preproject1_war_exploded/create">
-    <input type="submit" value="Create the New User" />
+  <form method="POST" action="/login">
+  <p> <input type="text" name="login"/></p>
+  <p> <input type="password" name="password"/></p>
+    <input type="submit" value="Login" >
   </form>
+
   </body>
 </html>

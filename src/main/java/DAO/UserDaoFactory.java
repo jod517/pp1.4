@@ -2,7 +2,7 @@ package DAO;
 
 import java.io.IOException;
 
-import static utill.getProp.getPropertyValue;
+import static utill.GetProp.getPropertyValue;
 
 public class UserDaoFactory {
 
